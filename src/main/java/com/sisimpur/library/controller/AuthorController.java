@@ -1,16 +1,25 @@
 package com.sisimpur.library.controller;
 
-import com.sisimpur.library.dto.author.AuthorResponseDto;
 import com.sisimpur.library.service.AuthorService;
+import com.sisimpur.library.dto.author.AuthorResponseDto;
+import com.sisimpur.library.dto.author.AuthorCreateRequestDto;
+import com.sisimpur.library.dto.author.AuthorUpdateRequestDto;
 
-import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
+import jakarta.validation.constraints.Min;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.http.HttpStatus;
+import jakarta.validation.Valid;
+
 
 
 @RestController
@@ -24,6 +33,24 @@ public class AuthorController {
     @GetMapping("/{id}")
     public ResponseEntity<AuthorResponseDto> getAuthor(@PathVariable @Min(1) Long id) {
         return ResponseEntity.ok(authorService.getAuthor(id));
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<AuthorResponseDto> createAuthor(@Valid @RequestBody AuthorCreateRequestDto authorCreateRequestDto) {
+        AuthorResponseDto createdAuthor = authorService.createAuthor(authorCreateRequestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdAuthor);
+    }
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<AuthorResponseDto> updateAuthor(@PathVariable Long id, @Valid @RequestBody AuthorUpdateRequestDto authorUpdateRequestDto) {
+        AuthorResponseDto updatedAuthor = authorService.updateAuthor(authorUpdateRequestDto, id);
+        return ResponseEntity.ok(updatedAuthor);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteAuthor(@PathVariable @Min(1) Long id) {
+        authorService.deleteAuthor(id);
+        return ResponseEntity.noContent().build();
     }
 }
 
