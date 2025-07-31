@@ -1,15 +1,27 @@
 package com.sisimpur.library.controller;
 
-import com.sisimpur.library.dto.book.BookResponseDto;
-import com.sisimpur.library.service.BookService;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.http.HttpStatus;
+
+
+import com.sisimpur.library.service.BookService;
+
+import com.sisimpur.library.dto.book.BookResponseDto;
+import com.sisimpur.library.dto.book.BookCreateRequestDto;
+import com.sisimpur.library.dto.book.BookUpdateRequestDto;
+
 
 @RestController
 @RequestMapping("/api/v1/books")
@@ -21,6 +33,35 @@ public class BookController {
 
     @GetMapping("/{id}")
     public ResponseEntity<BookResponseDto> getBookWithAuthor(@PathVariable @Min(1) Long id) {
-        return ResponseEntity.ok(bookService.getBookWithAuthor(id));
+        return new ResponseEntity<>(
+            bookService.getBookWithAuthor(id), 
+            HttpStatus.OK
+        );
     }
+
+    @PostMapping("/")
+    public ResponseEntity<BookResponseDto> createBook(
+        @Valid @RequestBody BookCreateRequestDto bookCreateRequestDto) {
+        return new ResponseEntity<>(
+            bookService.createBook(bookCreateRequestDto), 
+            HttpStatus.CREATED
+        );
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<BookResponseDto> updateBook(
+        @PathVariable @Min(1) Long id,
+        @Valid @RequestBody BookUpdateRequestDto bookUpdateRequestDto) {
+        return new ResponseEntity<>(
+            bookService.updateBook(id, bookUpdateRequestDto),
+            HttpStatus.OK
+        );
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBook(@PathVariable @Min(1) Long id) {
+        bookService.deleteBook(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }

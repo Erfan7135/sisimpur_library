@@ -1,5 +1,8 @@
 package com.sisimpur.library.dto.book;
 
+import com.sisimpur.library.model.Book;
+import com.sisimpur.library.model.Author;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,5 +33,14 @@ public class BookResponseDto {
         this.inStock = inStock;
         this.lendCount = lendCount;
     }
-    
+
+    public BookResponseDto(Book book, Author author) {
+        this.id = book.getId();
+        this.title = book.getTitle();
+        this.authorName = author.getName();
+        this.publishedYear = book.getPublishedYear();
+        this.genre = book.getGenre();
+        this.inStock = book.getInStock();
+        this.lendCount = book.getLendCount();
+    }
 }
