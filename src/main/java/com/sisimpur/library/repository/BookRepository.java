@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
 
-    @Query("SELECT new com.sisimpur.library.dto.BookResponseDto(" +
+    @Query("SELECT new com.sisimpur.library.dto.book.BookResponseDto(" +
             "b.id, b.title, a.name, b.publishedYear, b.genre, b.inStock, b.lendCount) " +
             "FROM Book b JOIN b.author a " +
             "WHERE b.id = :bookId")
