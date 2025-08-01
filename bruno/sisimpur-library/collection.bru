@@ -1,22 +1,7 @@
-meta {
-  name: borrow-books
-  type: http
-  seq: 1
-}
-
-post {
-  url: http://localhost:8080/api/v1/lendings/lend
-  body: json
-  auth: bearer
+auth {
+  mode: bearer
 }
 
 auth:bearer {
   token: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4iLCJ1c2VySWQiOjEsInN1YiI6ImFkbWluQGEuY29tIiwiaWF0IjoxNzU0MDczMTgwLCJleHAiOjE3NTQwNzQ5ODB9.vo8avB80oZB_ZRw4zLvg7ZzkaljbnxLDRP-4m1LU9i0
-}
-
-body:json {
-  {
-    "userId" : 2,
-    "bookId" : 1
-  }
 }

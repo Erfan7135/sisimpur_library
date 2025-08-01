@@ -43,6 +43,15 @@ public class BookService {
                 });
     }
 
+    public Book getBookEntityById(Long bookId) {
+        logger.info("Fetching book entity with id: {}", bookId);
+        return bookRepository.findById(bookId)
+                .orElseThrow(() -> {
+                    logger.error("Book not found with id: {}", bookId);
+                    return new ResourceNotFoundException("Book not found with id: " + bookId);
+                });
+    }
+
     public BookResponseDto createBook(BookCreateRequestDto bookCreateRequestDto) {
         logger.info("Creating book with title: {}", bookCreateRequestDto.getTitle());
         Author author = authorRepository.findAuthorById(bookCreateRequestDto.getAuthorId())
@@ -106,5 +115,34 @@ public class BookService {
         Specification<Book> spec = BookSpecification.getBooksByFilters(filter);
         Page<Book> booksPage = bookRepository.findAll(spec, pageable);
         return booksPage.map(book -> new BookResponseDto(book, book.getAuthor()));
+    }
+
+    public void decreaseStock(Long bookId) {
+        logger.info("Decreasing stock for book with id: {}", bookId);
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new ResourceNotFoundException("Book not found with id: " + bookId));
+        
+        if (book.getInStock() <= 0) {
+            throw new IllegalStateException("Book is out of stock");
+        }
+        
+        book.setInStock(book.getInStock() - 1);
+        book.setLendCount(book.getLendCount() + 1);
+        bookRepository.save(book);
+        logger.info("Stock decreased for book with id: {}. New stock: {}", bookId, book.getInStock());
+    }
+
+    public void increaseStock(Long bookId) {
+        logger.info("Increasing stock for book with id: {}", bookId);
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new ResourceNotFoundException("Book not found with id: " + bookId));
+        
+        book.setInStock(book.getInStock() + 1);
+        book.setLendCount(book.getLendCount() - 1);
+        if (book.getLendCount() < 0) {
+            book.setLendCount(0); // Ensure lend count does not go negative
+        }
+        bookRepository.save(book);
+        logger.info("Stock increased for book with id: {}. New stock: {}", bookId, book.getInStock());
     }
 }

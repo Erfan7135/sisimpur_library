@@ -43,4 +43,12 @@ public class User {
         }
     }
 
+    public boolean isAdmin() {
+        return this.role == UserRole.ADMIN;
+    }
+
+    public boolean isUser() {
+        return this.role == UserRole.USER;
+    }
+
 }

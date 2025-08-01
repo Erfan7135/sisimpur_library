@@ -75,4 +75,10 @@ public class UserService {
         logger.info("User deleted with id: {}", id);
     }
 
+    public User getUserEntityById(Long id) {
+        logger.info("Fetching user entity with id: {}", id);
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+    }
+
 }
