@@ -10,7 +10,13 @@ import jakarta.validation.Valid;
 
 import com.sisimpur.library.dto.user.UserResponseDto;
 import com.sisimpur.library.dto.user.UserCreateRequestDto;
+import com.sisimpur.library.dto.user.UserEditRequestDto;
+
 import com.sisimpur.library.service.UserService;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -36,5 +42,20 @@ public class UserController {
                 userResponseDto,
                 HttpStatus.CREATED
         );
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserResponseDto> updateUser(@PathVariable Long id, @Valid @RequestBody UserEditRequestDto userEditRequestDto) {
+        UserResponseDto userResponseDto = userService.updateUser(id, userEditRequestDto);
+        return new ResponseEntity<>(
+                userResponseDto,
+                HttpStatus.OK
+        );
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
