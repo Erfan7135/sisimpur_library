@@ -4,15 +4,22 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sisimpur.library.dto.book.BookResponseDto;
 import com.sisimpur.library.model.Book;
 import com.sisimpur.library.model.Lending;
 import com.sisimpur.library.model.User;
 import com.sisimpur.library.repository.LendingRepository;
 import com.sisimpur.library.exception.ResourceNotFoundException;
+import com.sisimpur.library.exception.BookNotAvailableException;
+import com.sisimpur.library.exception.InvalidUserRoleException;
+import com.sisimpur.library.exception.BookAlreadyBorrowedException;
+import com.sisimpur.library.exception.BookAlreadyReturnedException;
+import com.sisimpur.library.exception.NoActiveLendingException;
 
 import com.sisimpur.library.dto.lending.LendingRequestDto;
 import com.sisimpur.library.dto.lending.LendingResponseDto;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -38,7 +45,7 @@ public class LendingService {
         }
 
         if (book.getInStock() <= 0) {
-            throw new IllegalArgumentException("Book is not in stock");
+            throw new BookNotAvailableException("Book '" + book.getTitle() + "' is currently out of stock");
         }
 
         // Validate user exists
@@ -47,13 +54,13 @@ public class LendingService {
             throw new ResourceNotFoundException("User not found with id: " + userId);
         }
         if (user.isAdmin()) {
-            throw new IllegalArgumentException("Admin users cannot borrow books");
+            throw new InvalidUserRoleException("Admin users are not allowed to borrow books");
         }
 
         // Check if the user already has an active lending for this book
         Optional<Lending> existingLending = lendingRepository.findByBookIdAndUserIdAndReturnDateIsNull(bookId, userId);
         if (existingLending.isPresent()) {
-            throw new IllegalArgumentException("User already has an active lending for this book");
+            throw new BookAlreadyBorrowedException("User '" + user.getName() + "' already has an active lending for book '" + book.getTitle() + "'");
         }
 
         // Create lending record
@@ -73,7 +80,7 @@ public class LendingService {
         // Find the active lending record
         Optional<Lending> lendingOpt = lendingRepository.findByBookIdAndUserIdAndReturnDateIsNull(bookId, userId);
         if (lendingOpt.isEmpty()) {
-            throw new IllegalArgumentException("No active lending found for this book and user");
+            throw new NoActiveLendingException("No active lending found for book ID " + bookId + " and user ID " + userId);
         }
 
         Lending lending = lendingOpt.get();
@@ -82,6 +89,49 @@ public class LendingService {
         // Save the return and increase stock
         lendingRepository.save(lending);
         bookService.increaseStock(bookId);
+    }
+
+    public Page<LendingResponseDto> getAllLendings(Pageable pageable) {
+        Page<Lending> lendingsPage = lendingRepository.findAll(pageable);
+        return lendingsPage.map(this::mapToLendingResponseDto);
+    }
+
+    public Page<LendingResponseDto> getActiveLendings(Pageable pageable) {
+        Page<Lending> lendingsPage = lendingRepository.findByReturnDateIsNull(pageable);
+        return lendingsPage.map(this::mapToLendingResponseDto);
+    }
+
+    public Page<LendingResponseDto> getReturnedLendings(Pageable pageable) {
+        Page<Lending> lendingsPage = lendingRepository.findByReturnDateIsNotNull(pageable);
+        return lendingsPage.map(this::mapToLendingResponseDto);
+    }
+
+    @Transactional
+    public LendingResponseDto returnBookById(Long lendingId) {
+        Lending lending = lendingRepository.findById(lendingId)
+            .orElseThrow(() -> new ResourceNotFoundException("Lending record not found with id: " + lendingId));
+        
+        if (lending.getReturnDate() != null) {
+            throw new BookAlreadyReturnedException("Book '" + lending.getBook().getTitle() + "' has already been returned on " + lending.getReturnDate());
+        }
+
+        lending.setReturnDate(LocalDateTime.now());
+        Lending savedLending = lendingRepository.save(lending);
+        bookService.increaseStock(lending.getBook().getId());
+        
+        return mapToLendingResponseDto(savedLending);
+    }
+
+    private LendingResponseDto mapToLendingResponseDto(Lending lending) {
+        return new LendingResponseDto(
+            lending.getId(),
+            lending.getBook().getId(),
+            lending.getBook().getTitle(),
+            lending.getUser().getId(),
+            lending.getUser().getName(),
+            lending.getLendingDate(),
+            lending.getReturnDate()
+        );
     }
 
 }

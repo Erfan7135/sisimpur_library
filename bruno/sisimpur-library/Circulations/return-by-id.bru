@@ -1,22 +1,23 @@
 meta {
-  name: return-books
+  name: return-by-id
   type: http
-  seq: 2
+  seq: 3
 }
 
 post {
-  url: http://localhost:8080/api/v1/lendings/return
-  body: json
+  url: http://localhost:8080/api/v1/lendings/return/:id
+  body: none
   auth: bearer
+}
+
+params:path {
+  id: 2
 }
 
 auth:bearer {
   token: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4iLCJ1c2VySWQiOjEsInN1YiI6ImFkbWluQGEuY29tIiwiaWF0IjoxNzU0MDczMTgwLCJleHAiOjE3NTQwNzQ5ODB9.vo8avB80oZB_ZRw4zLvg7ZzkaljbnxLDRP-4m1LU9i0
 }
 
-body:json {
-  {
-    "userId" : 2,
-    "bookId" : 1
-  }
+settings {
+  encodeUrl: true
 }

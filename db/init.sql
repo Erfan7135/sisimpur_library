@@ -40,10 +40,10 @@ CREATE TABLE lendings (
 );
 
 -- Insert sample users
-INSERT INTO users (name, email, role) VALUES
-('Admin', 'admin@example.com', 'ADMIN'),
-('Alice', 'alice@example.com', 'USER'),
-('Bob', 'bob@example.com', 'USER');
+INSERT INTO users (name, email, password_hash, role) VALUES
+('Admin', 'admin@example.com', '$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a', 'ADMIN'), -- password: admin123
+('Alice', 'alice@example.com', '$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a', 'USER'), -- password: admin123
+('Bob', 'bob@example.com', '$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00DMxs.AQubh4a', 'USER'); -- password: admin123
 
 -- Insert sample authors
 INSERT INTO authors (name, bio) VALUES

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Circulation Management</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <h1>🔄 Admin - Circulation Management</h1>
+                <span id="welcome-message" class="welcome"></span>
+            </div>
+            <div class="header-actions">
+                <button id="back-to-books-btn" class="nav-btn">📖 View Books</button>
+                <button id="manage-books-btn" class="nav-btn">📚 Manage Books</button>
+                <button id="manage-users-btn" class="nav-btn">👥 Manage Users</button>
+                <button id="manage-authors-btn" class="nav-btn">✍️ Manage Authors</button>
+                <button id="logout-btn" class="logout-btn">Logout</button>
+            </div>
+        </div>
+
+        <!-- Lend Book Modal -->
+        <div id="lend-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Lend Book</h2>
+                <form id="lend-form">
+                    <div class="form-group">
+                        <label for="lend-user">User *</label>
+                        <select id="lend-user" required>
+                            <option value="">Select a user</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="lend-book">Book *</label>
+                        <select id="lend-book" required>
+                            <option value="">Select a book</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="save-btn">Lend Book</button>
+                        <button type="button" class="cancel-btn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Action Buttons Section -->
+        <div class="admin-section">
+            <div class="section-header">
+                <h2>Quick Actions</h2>
+                <div class="action-buttons-group">
+                    <button id="lend-book-btn" class="add-btn">📤 Lend Book</button>
+                    <button id="refresh-btn" class="search-btn">🔄 Refresh</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Active Lendings Section -->
+        <div class="admin-section">
+            <div class="section-header">
+                <h2>Active Lendings</h2>
+                <div class="filter-controls">
+                    <input type="text" id="active-user-filter" placeholder="Filter by user name..." class="filter-input">
+                    <input type="text" id="active-book-filter" placeholder="Filter by book title..." class="filter-input">
+                    <button id="filter-active-btn" class="search-btn">Filter</button>
+                    <button id="clear-active-filter-btn" class="cancel-btn">Clear</button>
+                </div>
+            </div>
+
+            <!-- Lendings Table -->
+            <div class="table-container">
+                <div id="lendings-loading" class="loading">Loading active lendings...</div>
+                <table id="lendings-table" class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Lending ID</th>
+                            <th>User</th>
+                            <th>Book</th>
+                            <th>Lent Date</th>
+                            <th>Days Borrowed</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lendings-tbody">
+                    </tbody>
+                </table>
+                <div id="lendings-error" class="error-message"></div>
+            </div>
+
+            <!-- Pagination -->
+            <div id="pagination" class="pagination"></div>
+        </div>
+
+        <!-- Lending History Section -->
+        <div class="admin-section">
+            <div class="section-header">
+                <h2>Lending History</h2>
+                <div class="filter-controls">
+                    <select id="history-filter">
+                        <option value="all">All Records</option>
+                        <option value="returned">Returned Only</option>
+                        <option value="active">Active Only</option>
+                    </select>
+                    <input type="text" id="history-user-filter" placeholder="Filter by user name..." class="filter-input">
+                    <input type="text" id="history-book-filter" placeholder="Filter by book title..." class="filter-input">
+                    <button id="filter-history-btn" class="search-btn">Filter</button>
+                    <button id="clear-history-filter-btn" class="cancel-btn">Clear</button>
+                </div>
+            </div>
+
+            <!-- History Table -->
+            <div class="table-container">
+                <div id="history-loading" class="loading">Loading lending history...</div>
+                <table id="history-table" class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Lending ID</th>
+                            <th>User</th>
+                            <th>Book</th>
+                            <th>Lent Date</th>
+                            <th>Return Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-tbody">
+                    </tbody>
+                </table>
+                <div id="history-error" class="error-message"></div>
+            </div>
+
+            <!-- History Pagination -->
+            <div id="history-pagination" class="pagination"></div>
+        </div>
+    </div>
+
+    <script src="js/admin-circulation.js"></script>
+</body>
+</html>

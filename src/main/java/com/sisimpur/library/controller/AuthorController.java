@@ -30,7 +30,6 @@ import org.springframework.data.web.PageableDefault;
 @RequestMapping("/api/v1/authors")
 @RequiredArgsConstructor
 @Validated
-@PreAuthorize("hasRole('ADMIN')")
 public class AuthorController {
 
     private final AuthorService authorService;
@@ -54,6 +53,7 @@ public class AuthorController {
     }
 
     @PostMapping("/")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AuthorResponseDto> createAuthor(@Valid @RequestBody AuthorCreateRequestDto authorCreateRequestDto) {
         AuthorResponseDto createdAuthor = authorService.createAuthor(authorCreateRequestDto);
         return new ResponseEntity<>(
@@ -63,6 +63,7 @@ public class AuthorController {
     }
     
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AuthorResponseDto> updateAuthor(@PathVariable Long id, @Valid @RequestBody AuthorUpdateRequestDto authorUpdateRequestDto) {
         AuthorResponseDto updatedAuthor = authorService.updateAuthor(authorUpdateRequestDto, id);
         return new ResponseEntity<>(
@@ -72,6 +73,7 @@ public class AuthorController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteAuthor(@PathVariable @Min(1) Long id) {
         authorService.deleteAuthor(id);
         return new ResponseEntity<>(

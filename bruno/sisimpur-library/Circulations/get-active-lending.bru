@@ -1,15 +1,19 @@
 meta {
-  name: get-all-users
+  name: get-active-lending
   type: http
-  seq: 4
+  seq: 5
 }
 
 get {
-  url: http://localhost:8080/api/v1/users
+  url: http://localhost:8080/api/v1/lendings/active
   body: none
   auth: bearer
 }
 
 auth:bearer {
   token: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4iLCJ1c2VySWQiOjEsInN1YiI6ImFkbWluQGEuY29tIiwiaWF0IjoxNzU0MDg1MTAwLCJleHAiOjE3NTQwODY5MDB9.E7JVxPxZbpXp6brlVXOpb9FvCYPaxY9BL3YhpUBxELI
+}
+
+settings {
+  encodeUrl: true
 }

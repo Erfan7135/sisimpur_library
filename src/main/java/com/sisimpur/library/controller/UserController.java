@@ -11,12 +11,16 @@ import jakarta.validation.Valid;
 import com.sisimpur.library.dto.user.UserResponseDto;
 import com.sisimpur.library.dto.user.UserCreateRequestDto;
 import com.sisimpur.library.dto.user.UserEditRequestDto;
+import com.sisimpur.library.model.UserRole;
 
 import com.sisimpur.library.service.UserService;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 @RestController
@@ -34,6 +38,16 @@ public class UserController {
         return new ResponseEntity<>(
                 userResponseDto,
                 HttpStatus.OK
+        );
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<UserResponseDto>> getAllUsers(
+        @PageableDefault(size = 10, sort = "id") Pageable pageable) {
+        Page<UserResponseDto> usersPage = userService.getUsersWithRole(UserRole.USER, pageable);
+        return new ResponseEntity<>(
+            usersPage,
+            HttpStatus.OK
         );
     }
 

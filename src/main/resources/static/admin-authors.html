@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Authors Management</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <h1>✍️ Admin - Authors Management</h1>
+                <span id="welcome-message" class="welcome"></span>
+            </div>
+            <div class="header-actions">
+                <button id="back-to-books-btn" class="nav-btn">📖 View Books</button>
+                <button id="manage-books-btn" class="nav-btn">📚 Manage Books</button>
+                <button id="manage-users-btn" class="nav-btn">👥 Manage Users</button>
+                <button id="manage-circulation-btn" class="nav-btn">🔄 Circulation</button>
+                <button id="logout-btn" class="logout-btn">Logout</button>
+            </div>
+        </div>
+
+        <!-- Add/Edit Author Modal -->
+        <div id="author-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2 id="modal-title">Add New Author</h2>
+                <form id="author-form">
+                    <input type="hidden" id="author-id">
+                    <div class="form-group">
+                        <label for="author-name">Name *</label>
+                        <input type="text" id="author-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="author-bio">Biography</label>
+                        <textarea id="author-bio" rows="4" placeholder="Enter author's biography..."></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="save-btn">Save Author</button>
+                        <button type="button" class="cancel-btn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Authors Management Section -->
+        <div class="admin-section">
+            <div class="section-header">
+                <h2>Authors Management</h2>
+                <button id="add-author-btn" class="add-btn">+ Add New Author</button>
+            </div>
+
+            <!-- Authors Table -->
+            <div class="table-container">
+                <div id="authors-loading" class="loading">Loading authors...</div>
+                <table id="authors-table" class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Biography</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="authors-tbody">
+                    </tbody>
+                </table>
+                <div id="authors-error" class="error-message"></div>
+            </div>
+
+            <!-- Pagination -->
+            <div id="pagination" class="pagination"></div>
+        </div>
+    </div>
+
+    <script src="js/admin-authors.js"></script>
+</body>
+</html>

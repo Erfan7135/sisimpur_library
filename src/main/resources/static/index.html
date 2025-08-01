@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sisimpur Library - Login</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Login Section -->
+        <div id="login-section" class="section active">
+            <div class="login-container">
+                <div class="library-header">
+                    <h1>📚 Sisimpur Library</h1>
+                    <p>Your Gateway to Knowledge</p>
+                </div>
+                <form id="login-form" class="login-form">
+                    <h2>Login</h2>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <button type="submit" class="login-btn">Login</button>
+                    <div id="login-error" class="error-message"></div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Books Section -->
+        <div id="books-section" class="section">
+            <div class="header">
+                <div class="header-left">
+                    <h1>📚 Sisimpur Library</h1>
+                    <span id="welcome-message" class="welcome"></span>
+                </div>
+                <button id="logout-btn" class="logout-btn">Logout</button>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters-container">
+                <h3>Filter Books</h3>
+                <div class="filters">
+                    <div class="filter-group">
+                        <label for="title-filter">Title:</label>
+                        <input type="text" id="title-filter" placeholder="Search by title">
+                    </div>
+                    <div class="filter-group">
+                        <label for="author-filter">Author:</label>
+                        <input type="text" id="author-filter" placeholder="Search by author">
+                    </div>
+                    <div class="filter-group">
+                        <label for="genre-filter">Genre:</label>
+                        <input type="text" id="genre-filter" placeholder="Search by genre">
+                    </div>
+                    <div class="filter-group">
+                        <label for="year-filter">Published Year:</label>
+                        <input type="number" id="year-filter" placeholder="e.g., 2020">
+                    </div>
+                    <div class="filter-group">
+                        <label for="available-filter">Available:</label>
+                        <select id="available-filter">
+                            <option value="">All</option>
+                            <option value="true">Available</option>
+                            <option value="false">Not Available</option>
+                        </select>
+                    </div>
+                    <div class="filter-actions">
+                        <button id="search-btn" class="search-btn">Search</button>
+                        <button id="clear-filters-btn" class="clear-btn">Clear Filters</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Books Grid -->
+            <div class="books-container">
+                <div id="books-loading" class="loading">Loading books...</div>
+                <div id="books-grid" class="books-grid"></div>
+                <div id="books-error" class="error-message"></div>
+            </div>
+
+            <!-- Pagination -->
+            <div id="pagination" class="pagination"></div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

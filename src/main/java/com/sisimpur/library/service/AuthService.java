@@ -13,6 +13,7 @@ import com.sisimpur.library.model.User;
 import com.sisimpur.library.repository.UserRepository;
 import com.sisimpur.library.util.JwtUtil;
 import com.sisimpur.library.exception.ResourceNotFoundException;
+import com.sisimpur.library.exception.InvalidCredentialsException;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +32,7 @@ public class AuthService {
         
         
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPasswordHash())) {
-            throw new IllegalArgumentException("Invalid credentials");
+            throw new InvalidCredentialsException("Invalid email or password provided");
         }
         
         String token = jwtUtil.generateToken(user.getEmail(), user.getId(), user.getRole());

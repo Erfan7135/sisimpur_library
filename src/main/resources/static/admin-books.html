@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Books Management</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <h1>📚 Admin - Books Management</h1>
+                <span id="welcome-message" class="welcome"></span>
+            </div>
+            <div class="header-actions">
+                <button id="back-to-books-btn" class="nav-btn">📖 View Books</button>
+                <button id="manage-users-btn" class="nav-btn">👥 Manage Users</button>
+                <button id="manage-authors-btn" class="nav-btn">✍️ Manage Authors</button>
+                <button id="manage-circulation-btn" class="nav-btn">🔄 Circulation</button>
+                <button id="logout-btn" class="logout-btn">Logout</button>
+            </div>
+        </div>
+
+        <!-- Add/Edit Book Modal -->
+        <div id="book-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2 id="modal-title">Add New Book</h2>
+                <form id="book-form">
+                    <input type="hidden" id="book-id">
+                    <div class="form-group">
+                        <label for="book-title">Title *</label>
+                        <input type="text" id="book-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="book-author">Author *</label>
+                        <select id="book-author" required>
+                            <option value="">Select an author</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="book-year">Published Year</label>
+                        <input type="number" id="book-year" min="1000" max="2025">
+                    </div>
+                    <div class="form-group">
+                        <label for="book-genre">Genre</label>
+                        <input type="text" id="book-genre">
+                    </div>
+                    <div class="form-group">
+                        <label for="book-stock">In Stock *</label>
+                        <input type="number" id="book-stock" min="0" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="save-btn">Save Book</button>
+                        <button type="button" class="cancel-btn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Books Management Section -->
+        <div class="admin-section">
+            <div class="section-header">
+                <h2>Books Management</h2>
+                <button id="add-book-btn" class="add-btn">+ Add New Book</button>
+            </div>
+
+            <!-- Books Table -->
+            <div class="table-container">
+                <div id="books-loading" class="loading">Loading books...</div>
+                <table id="books-table" class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Year</th>
+                            <th>Genre</th>
+                            <th>In Stock</th>
+                            <th>Lent</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="books-tbody">
+                    </tbody>
+                </table>
+                <div id="books-error" class="error-message"></div>
+            </div>
+
+            <!-- Pagination -->
+            <div id="pagination" class="pagination"></div>
+        </div>
+    </div>
+
+    <script src="js/admin-books.js"></script>
+</body>
+</html>

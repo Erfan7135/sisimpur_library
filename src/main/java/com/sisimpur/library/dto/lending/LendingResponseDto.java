@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -24,5 +23,6 @@ public class LendingResponseDto {
         this.userId = userId;
         this.userName = userName;
         this.startDate = startDate;
+        this.endDate = endDate;
     }
 }

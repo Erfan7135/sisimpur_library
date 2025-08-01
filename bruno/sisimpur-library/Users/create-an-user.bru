@@ -7,13 +7,17 @@ meta {
 post {
   url: http://localhost:8080/api/v1/users/
   body: json
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4iLCJ1c2VySWQiOjEsInN1YiI6ImFkbWluQGEuY29tIiwiaWF0IjoxNzU0MDY4MzM3LCJleHAiOjE3NTQwNzAxMzd9.JcPUo1IaSrcuK_fvLs6FGUuQkeTlf3QR5DVoFuDyNJk
 }
 
 body:json {
   {
     "name" : "Abc",
-    "email" : "a@a.com",
-    "password" : "12345"
+    "email" : "a@abc.com",
+    "password" : "admin"
   }
 }

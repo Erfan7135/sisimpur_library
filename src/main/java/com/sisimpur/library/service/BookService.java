@@ -2,29 +2,28 @@ package com.sisimpur.library.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import com.sisimpur.library.exception.ResourceNotFoundException;
+import com.sisimpur.library.exception.EntityWithActiveLendingException;
 
 import com.sisimpur.library.model.Book;
 import com.sisimpur.library.model.Author;
-
+import com.sisimpur.library.model.Lending;
 import com.sisimpur.library.repository.BookRepository;
 import com.sisimpur.library.repository.AuthorRepository;
-
-import com.sisimpur.library.exception.ResourceNotFoundException;
-
+import com.sisimpur.library.repository.LendingRepository;
 import com.sisimpur.library.dto.book.BookResponseDto;
 import com.sisimpur.library.dto.book.BookUpdateRequestDto;
 import com.sisimpur.library.dto.book.BookCreateRequestDto;
 import com.sisimpur.library.dto.book.BookFilterRequestDto;
-
 import com.sisimpur.library.repository.BookSpecification;
 
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-
-
-import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +32,7 @@ public class BookService {
     private static final Logger logger = LoggerFactory.getLogger(BookService.class);
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
+    private final LendingRepository lendingRepository;
 
     public BookResponseDto getBookWithAuthor(Long bookId) {
         logger.info("Fetching book with id: {}", bookId);
@@ -106,6 +106,10 @@ public class BookService {
         logger.info("Deleting book with id: {}", bookId);
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found with id: " + bookId));
+        Optional<Lending> lending = lendingRepository.findByBookIdAndReturnDateIsNull(bookId);
+        if (lending.isPresent()) {
+            throw new EntityWithActiveLendingException("Book with id: " + bookId + " has active lendings and cannot be deleted.");
+        }
         bookRepository.delete(book);
         logger.info("Book deleted with id: {}", book.getId());
     }

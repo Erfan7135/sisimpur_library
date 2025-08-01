@@ -24,6 +24,9 @@ public class WebSecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/v1/auth/login").permitAll() // Allow login endpoint
                 .requestMatchers("/api/v1/books/**").permitAll()
+                .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/authors/**").permitAll() // Allow GET requests to authors
+                .requestMatchers("/", "/index.html", "/css/**", "/js/**", "/favicon.ico").permitAll() // Allow static resources
+                .requestMatchers("/admin-*.html").permitAll() // Allow admin pages (auth will be handled by frontend)
                 .anyRequest().authenticated() // Secure all other endpoints
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // Use stateless sessions

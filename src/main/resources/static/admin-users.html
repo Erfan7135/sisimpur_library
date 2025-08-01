@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Users Management</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <h1>👥 Admin - Users Management</h1>
+                <span id="welcome-message" class="welcome"></span>
+            </div>
+            <div class="header-actions">
+                <button id="back-to-books-btn" class="nav-btn">📖 View Books</button>
+                <button id="manage-books-btn" class="nav-btn">📚 Manage Books</button>
+                <button id="manage-authors-btn" class="nav-btn">✍️ Manage Authors</button>
+                <button id="manage-circulation-btn" class="nav-btn">🔄 Circulation</button>
+                <button id="logout-btn" class="logout-btn">Logout</button>
+            </div>
+        </div>
+
+        <!-- Add/Edit User Modal -->
+        <div id="user-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2 id="modal-title">Add New User</h2>
+                <form id="user-form">
+                    <input type="hidden" id="user-id">
+                    <div class="form-group">
+                        <label for="user-name">Name *</label>
+                        <input type="text" id="user-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-email">Email *</label>
+                        <input type="email" id="user-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-password">Password *</label>
+                        <input type="password" id="user-password" minlength="5" maxlength="20">
+                        <small class="help-text">Password is required for new users (5-20 characters). Leave empty to keep current password when editing.</small>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="save-btn">Save User</button>
+                        <button type="button" class="cancel-btn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Users Management Section -->
+        <div class="admin-section">
+            <div class="section-header">
+                <h2>Users Management</h2>
+                <button id="add-user-btn" class="add-btn">+ Add New User</button>
+            </div>
+
+            <!-- Users Table -->
+            <div class="table-container">
+                <div id="users-loading" class="loading">Loading users...</div>
+                <table id="users-table" class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-tbody">
+                    </tbody>
+                </table>
+                <div id="users-error" class="error-message"></div>
+            </div>
+
+            <!-- Pagination -->
+            <div id="pagination" class="pagination"></div>
+        </div>
+    </div>
+
+    <script src="js/admin-users.js"></script>
+</body>
+</html>

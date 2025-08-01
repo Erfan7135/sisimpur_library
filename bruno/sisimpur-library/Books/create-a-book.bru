@@ -7,7 +7,11 @@ meta {
 post {
   url: http://localhost:8080/api/v1/books/
   body: json
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInVzZXJJZCI6NSwic3ViIjoiYUBhLmNvbSIsImlhdCI6MTc1NDA2OTA2MywiZXhwIjoxNzU0MDcwODYzfQ.xAAKfINjHrRyu4gRtBpfAmKg8L-pw5FIwf3z71cA2_o
 }
 
 body:json {

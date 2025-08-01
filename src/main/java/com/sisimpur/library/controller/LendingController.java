@@ -11,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 
 @RestController
 @RequestMapping("/api/v1/lendings")
@@ -31,6 +34,33 @@ public class LendingController {
     public ResponseEntity<Void> returnLending(@Valid @RequestBody LendingRequestDto requestDto) {
         lendingService.returnBook(requestDto.getBookId(), requestDto.getUserId());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/return/{id}")
+    public ResponseEntity<LendingResponseDto> returnBook(@PathVariable Long id) {
+        LendingResponseDto response = lendingService.returnBookById(id);
+        return ResponseEntity.ok(response);
+    }
+    
+    @GetMapping
+    public ResponseEntity<Page<LendingResponseDto>> getAllLendings(
+            @PageableDefault(size = 10, sort = "lendingDate") Pageable pageable) {
+        Page<LendingResponseDto> lendings = lendingService.getAllLendings(pageable);
+        return ResponseEntity.ok(lendings);
+    }
+    
+    @GetMapping("/active")
+    public ResponseEntity<Page<LendingResponseDto>> getActiveLendings(
+            @PageableDefault(size = 10, sort = "lendingDate") Pageable pageable) {
+        Page<LendingResponseDto> activeLendings = lendingService.getActiveLendings(pageable);
+        return ResponseEntity.ok(activeLendings);
+    }
+    
+    @GetMapping("/returned")
+    public ResponseEntity<Page<LendingResponseDto>> getReturnedLendings(
+            @PageableDefault(size = 10, sort = "returnDate") Pageable pageable) {
+        Page<LendingResponseDto> returnedLendings = lendingService.getReturnedLendings(pageable);
+        return ResponseEntity.ok(returnedLendings);
     }
 
 }
