@@ -6,8 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
+import jakarta.validation.Valid;
 
 import com.sisimpur.library.dto.user.UserResponseDto;
+import com.sisimpur.library.dto.user.UserCreateRequestDto;
 import com.sisimpur.library.service.UserService;
 
 @RestController
@@ -24,6 +26,15 @@ public class UserController {
         return new ResponseEntity<>(
                 userResponseDto,
                 HttpStatus.OK
+        );
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<UserResponseDto> createUser(@Valid @RequestBody UserCreateRequestDto userCreateRequestDto) {
+        UserResponseDto userResponseDto = userService.createUser(userCreateRequestDto);
+        return new ResponseEntity<>(
+                userResponseDto,
+                HttpStatus.CREATED
         );
     }
 }

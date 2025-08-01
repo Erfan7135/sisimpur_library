@@ -5,13 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
+
 
 @Setter
 @Getter
@@ -33,8 +33,14 @@ public class User {
     @Column(name = "password_hash", length = 100)
     private String passwordHash;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role", length = 20, nullable = false)
+    @Column(name = "role", nullable = false)
     private UserRole role;
+
+    @PrePersist
+    private void prePersist() {
+        if (this.role == null) {
+            this.role = UserRole.USER; // Default role for new users
+        }
+    }
 
 }
