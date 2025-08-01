@@ -15,6 +15,14 @@ import com.sisimpur.library.exception.ResourceNotFoundException;
 import com.sisimpur.library.dto.book.BookResponseDto;
 import com.sisimpur.library.dto.book.BookUpdateRequestDto;
 import com.sisimpur.library.dto.book.BookCreateRequestDto;
+import com.sisimpur.library.dto.book.BookFilterRequestDto;
+
+import com.sisimpur.library.repository.BookSpecification;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+
 
 import lombok.RequiredArgsConstructor;
 
@@ -91,5 +99,12 @@ public class BookService {
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found with id: " + bookId));
         bookRepository.delete(book);
         logger.info("Book deleted with id: {}", book.getId());
+    }
+
+    public Page<BookResponseDto> getAllBooks(BookFilterRequestDto filter, Pageable pageable) {
+        logger.info("Fetching all books with filters: {}, pageable: {}", filter, pageable);
+        Specification<Book> spec = BookSpecification.getBooksByFilters(filter);
+        Page<Book> booksPage = bookRepository.findAll(spec, pageable);
+        return booksPage.map(book -> new BookResponseDto(book, book.getAuthor()));
     }
 }

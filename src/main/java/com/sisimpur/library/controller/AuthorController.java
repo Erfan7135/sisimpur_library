@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.HttpStatus;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 
 
 
@@ -34,6 +37,16 @@ public class AuthorController {
     public ResponseEntity<AuthorResponseDto> getAuthor(@PathVariable @Min(1) Long id) {
         return  new ResponseEntity<>(
             authorService.getAuthor(id), 
+            HttpStatus.OK
+        );
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<AuthorResponseDto>> getAllAuthors(
+        @PageableDefault(size = 10, sort = "id")Pageable pageable) {
+        Page<AuthorResponseDto> authorsPage = authorService.getAllAuthors(pageable);
+        return new ResponseEntity<>(
+            authorsPage,
             HttpStatus.OK
         );
     }

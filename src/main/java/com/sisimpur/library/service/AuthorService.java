@@ -3,6 +3,8 @@ package com.sisimpur.library.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.sisimpur.library.repository.AuthorRepository;
 import com.sisimpur.library.dto.author.AuthorResponseDto;
@@ -68,6 +70,12 @@ public class AuthorService {
         }
         authorRepository.delete(author);
         logger.info("Author deleted successfully: {}", author.getName());
+    }
+
+    public Page<AuthorResponseDto> getAllAuthors(Pageable pageable) {
+        logger.info("Fetching all authors with pagination: {}", pageable);
+        Page<Author> authorsPage = authorRepository.findAll(pageable);
+        return authorsPage.map(author -> new AuthorResponseDto(author.getId(), author.getName(), author.getBio()));
     }
 
 

@@ -21,6 +21,11 @@ import com.sisimpur.library.service.BookService;
 import com.sisimpur.library.dto.book.BookResponseDto;
 import com.sisimpur.library.dto.book.BookCreateRequestDto;
 import com.sisimpur.library.dto.book.BookUpdateRequestDto;
+import com.sisimpur.library.dto.book.BookFilterRequestDto;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 
 
 @RestController
@@ -35,6 +40,17 @@ public class BookController {
     public ResponseEntity<BookResponseDto> getBookWithAuthor(@PathVariable @Min(1) Long id) {
         return new ResponseEntity<>(
             bookService.getBookWithAuthor(id), 
+            HttpStatus.OK
+        );
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<BookResponseDto>> getAllBooks(
+        @Valid BookFilterRequestDto filter,
+        @PageableDefault(size = 10, sort = "id") Pageable pageable) {
+        Page<BookResponseDto> booksPage = bookService.getAllBooks(filter, pageable);
+        return new ResponseEntity<>(
+            booksPage,
             HttpStatus.OK
         );
     }

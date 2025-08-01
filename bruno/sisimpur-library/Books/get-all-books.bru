@@ -5,7 +5,15 @@ meta {
 }
 
 get {
-  url: http://localhost:8080/api/v1/books
+  url: http://localhost:8080/api/v1/books?available=true&genre=fantasy
   body: none
   auth: none
+}
+
+params:query {
+  available: true
+  genre: fantasy
+  ~title: harr
+  ~authorName: Rio
+  ~publishedYear: 2026
 }
