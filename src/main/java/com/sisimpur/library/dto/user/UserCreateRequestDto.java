@@ -21,13 +21,11 @@ public class UserCreateRequestDto {
     @NotBlank(message = "Password cannot be blank")
     @Size(min = 5, max = 20, message = "Password should be between 5 and 20 characters")
     private String password;
-    private String password_hash;
 
     public UserCreateRequestDto(String name, String email, String password) {
         
         this.name = name;
         this.email = email;
         this.password = password;
-        this.password_hash =  java.util.Base64.getEncoder().encodeToString(password.getBytes());
     }
 }

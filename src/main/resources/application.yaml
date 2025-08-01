@@ -24,3 +24,6 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         '[format_sql]': true
     show-sql: true
+jwt:
+  secret: sisimpur_library_scret_key_that_should_be_long_enough
+  expirationMs: 1800000 # 30 minutes

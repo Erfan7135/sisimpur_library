@@ -15,11 +15,14 @@ import com.sisimpur.library.dto.user.UserResponseDto;
 import com.sisimpur.library.dto.user.UserCreateRequestDto;
 import com.sisimpur.library.dto.user.UserEditRequestDto;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     public UserResponseDto getUserById(Long id) {
@@ -37,7 +40,11 @@ public class UserService {
         User user = new User();
         user.setName(userCreateRequestDto.getName());
         user.setEmail(userCreateRequestDto.getEmail());
-        user.setPasswordHash(userCreateRequestDto.getPassword_hash());
+        if (userRepository.existsByEmail(userCreateRequestDto.getEmail())) {
+            throw new IllegalArgumentException("Email already exists: " + userCreateRequestDto.getEmail());
+        }
+        String hashedPassword = passwordEncoder.encode(userCreateRequestDto.getPassword());
+        user.setPasswordHash(hashedPassword);
         // user.setRole(UserRole.USER); // Default role for new users
         User savedUser = userRepository.save(user);
         logger.info("User created with id: {}", savedUser.getId());
@@ -53,8 +60,8 @@ public class UserService {
                 user.setName(userEditRequestDto.getName());
         if(userEditRequestDto.getEmail() != null)
                 user.setEmail(userEditRequestDto.getEmail());
-        if(userEditRequestDto.getPasswordHash() != null)
-                user.setPasswordHash(userEditRequestDto.getPasswordHash());
+        if(userEditRequestDto.getPassword() != null)
+                user.setPasswordHash(passwordEncoder.encode(userEditRequestDto.getPassword()));
         User updatedUser = userRepository.save(user);
         logger.info("User updated with id: {}", updatedUser.getId());
         return new UserResponseDto(updatedUser);
