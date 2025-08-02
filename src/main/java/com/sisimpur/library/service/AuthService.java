@@ -38,6 +38,6 @@ public class AuthService {
         String token = jwtUtil.generateToken(user.getEmail(), user.getId(), user.getRole());
 
         logger.info("User logged in successfully with email: {}", loginRequest.getEmail());
-        return new LoginResponseDto(token, user.getId(), user.getName(), user.getEmail());
+        return new LoginResponseDto(token, user.getId(), user.getName(), user.getEmail(), user.getRole().name());
     }
 }

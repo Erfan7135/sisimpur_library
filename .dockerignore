@@ -1,0 +1,33 @@
+# Build outputs
+build/
+target/
+*.jar
+*.war
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Docker files (except the ones we need)
+Dockerfile.*
+docker-compose*.yml
+
+# Documentation
+README.md
+docs/
+
+# Logs
+*.log
+
+# Temporary files
+tmp/
+temp/

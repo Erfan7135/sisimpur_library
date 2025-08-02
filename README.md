@@ -1,6 +1,11 @@
 # Sisimpur Library Management System
 
+[![Docker Hub](https://img.shields.io/badge/Docker%20Hub-erfan5135%2Fsisimpur--library-blue?logo=docker)](https://hub.docker.com/r/erfan5135/sisimpur-library)
+[![Docker Pulls](https://img.shields.io/docker/pulls/erfan5135/sisimpur-library)](https://hub.docker.com/r/erfan5135/sisimpur-library)
+
 A comprehensive library management system built with Spring Boot and PostgreSQL, designed to modernize the traditional pen-and-paper library operations at Sisimpur Library.
+
+> **🚀 Quick Start:** `docker pull erfan5135/sisimpur-library:latest && docker run -p 8080:8080 erfan5135/sisimpur-library:latest`
 
 ## 📖 Overview
 
@@ -92,6 +97,29 @@ src/
 
 ### Installation
 
+#### Option 1: Docker Hub (Recommended - Fastest Setup)
+
+**The easiest way to run the application:**
+
+```bash
+# Pull and run the complete application (includes database and backend)
+docker pull erfan5135/sisimpur-library:latest
+docker run -p 8080:8080 erfan5135/sisimpur-library:latest
+```
+
+**Access the application:**
+- Main Interface: <http://localhost:8080>
+- Health Check: <http://localhost:8080/api/v1/health>
+- Admin Panel: <http://localhost:8080/admin-books.html>
+
+The Docker image includes:
+- ✅ Complete Spring Boot application
+- ✅ PostgreSQL database with sample data
+- ✅ All dependencies and configurations
+- ✅ Ready-to-use with pre-populated books, users, and lending data
+
+#### Option 2: Local Development Setup
+
 1. **Clone the repository**
 
    ```bash
@@ -123,8 +151,18 @@ src/
 
    - Main Interface: <http://localhost:8080>
    - Health Check: <http://localhost:8080/api/v1/health>
+   - Admin Panel: <http://localhost:8080/admin-books.html>
 
-### Default Login Credentials
+### Demo Login Options
+
+The login page provides two convenient ways to access the system:
+
+#### Quick Demo Login (One-Click)
+
+- **🔑 Login as Admin** - Instantly login with admin privileges
+- **👤 Login as User** - Instantly login with user privileges
+
+#### Manual Login
 
 - **Admin**: `admin@example.com` / `admin123`
 - **User**: `alice@example.com` / `admin123`
@@ -242,7 +280,56 @@ The application includes several admin panels:
 - CORS configuration for frontend integration
 - SQL injection prevention through JPA
 
-## 📈 Future Enhancements
+## � Docker Deployment
+
+### Available on Docker Hub
+
+The application is available as a ready-to-use Docker image:
+
+```bash
+# Pull the latest image
+docker pull erfan5135/sisimpur-library:latest
+
+# Run the container
+docker run -p 8080:8080 erfan5135/sisimpur-library:latest
+
+# Run in background
+docker run -d -p 8080:8080 --name sisimpur-library erfan5135/sisimpur-library:latest
+```
+
+### Image Details
+
+- **Repository**: `erfan5135/sisimpur-library`
+- **Latest Tag**: `latest`
+- **Image Size**: Optimized for production
+- **Includes**: Complete application + PostgreSQL + Sample data
+- **Exposed Port**: 8080
+
+### Docker Features
+
+✅ **Single Container Solution**: Both database and application in one container  
+✅ **Pre-configured**: No setup required, ready to use  
+✅ **Sample Data**: Includes books, users, and lending records  
+✅ **Production Ready**: Optimized build with proper configurations  
+✅ **Easy Sharing**: Perfect for demos and development  
+
+### Alternative Docker Commands
+
+```bash
+# Run with custom container name
+docker run -d -p 8080:8080 --name my-library erfan5135/sisimpur-library:latest
+
+# View logs
+docker logs sisimpur-library
+
+# Stop container
+docker stop sisimpur-library
+
+# Remove container
+docker rm sisimpur-library
+```
+
+## �📈 Future Enhancements
 
 - Book reservation system
 - Email notifications for due dates

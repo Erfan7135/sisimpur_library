@@ -32,6 +32,22 @@ const availableFilter = document.getElementById('available-filter');
 const searchBtn = document.getElementById('search-btn');
 const clearFiltersBtn = document.getElementById('clear-filters-btn');
 
+// Quick login buttons
+const quickAdminBtn = document.getElementById('quick-admin-btn');
+const quickUserBtn = document.getElementById('quick-user-btn');
+
+// Demo credentials
+const DEMO_CREDENTIALS = {
+    admin: {
+        email: 'admin@example.com',
+        password: 'admin123'
+    },
+    user: {
+        email: 'alice@example.com',
+        password: 'admin123'
+    }
+};
+
 // Utility Functions
 function getAuthToken() {
     return localStorage.getItem('authToken');
@@ -53,6 +69,11 @@ function setCurrentUser(user) {
 function getCurrentUser() {
     const stored = localStorage.getItem('currentUser');
     return stored ? JSON.parse(stored) : null;
+}
+
+function isCurrentUserAdmin() {
+    const user = getCurrentUser();
+    return user && user.role === 'ADMIN';
 }
 
 function clearUserData() {
@@ -119,6 +140,50 @@ async function login(email, password) {
     return response;
 }
 
+// Quick login function for demo purposes
+async function quickLogin(userType) {
+    const credentials = DEMO_CREDENTIALS[userType];
+    if (!credentials) {
+        console.error('Invalid user type for quick login');
+        return;
+    }
+
+    const button = userType === 'admin' ? quickAdminBtn : quickUserBtn;
+    const originalText = button.textContent;
+    
+    try {
+        // Disable button and show loading state
+        button.disabled = true;
+        button.textContent = 'Logging in...';
+        
+        // Clear any previous errors
+        loginError.textContent = '';
+        
+        // Perform login
+        const response = await login(credentials.email, credentials.password);
+        
+        // Store auth data
+        setAuthToken(response.token);
+        setCurrentUser({
+            userId: response.userId,
+            username: response.username,
+            email: response.email,
+            role: response.role
+        });
+        
+        // Show books section
+        showBooks();
+        
+    } catch (error) {
+        console.error('Quick login failed:', error);
+        showError('login-error', error.message || 'Login failed. Please try again.');
+    } finally {
+        // Restore button state
+        button.disabled = false;
+        button.textContent = originalText;
+    }
+}
+
 async function fetchBooks(filters = {}, page = 0, size = 10) {
     const queryParams = new URLSearchParams();
     
@@ -153,8 +218,10 @@ function showBooks() {
     if (currentUser) {
         welcomeMessage.textContent = `Welcome, ${currentUser.username || currentUser.email}!`;
         
-        // Add admin buttons if user is admin
-        addAdminButtons();
+        // Add admin buttons only if user is admin
+        if (currentUser.role === 'ADMIN') {
+            addAdminButtons();
+        }
     }
     
     loadBooks();
@@ -364,7 +431,8 @@ loginForm.addEventListener('submit', async (e) => {
         setCurrentUser({
             userId: response.userId,
             username: response.username,
-            email: response.email
+            email: response.email,
+            role: response.role
         });
         
         // Show books section
@@ -383,6 +451,10 @@ logoutBtn.addEventListener('click', logout);
 
 searchBtn.addEventListener('click', applyFilters);
 clearFiltersBtn.addEventListener('click', clearFilters);
+
+// Quick login button event listeners
+quickAdminBtn.addEventListener('click', () => quickLogin('admin'));
+quickUserBtn.addEventListener('click', () => quickLogin('user'));
 
 // Enter key support for filters
 [titleFilter, authorFilter, genreFilter, yearFilter].forEach(input => {
